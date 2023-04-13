@@ -73,42 +73,42 @@ Az autoload nem szab meg semmilyen kikötéseket a fájlnevekkel kapcsolatban, d
 Vannak olyan route-ok, ahol mas fájlok is találhatóak, például a `movies/` erőforrásban a feltöltessél foglalkozó modulok.
 
 ### Authentication
-A backend egy egyszerusitett bearer tokenes rendszert hasznal, ahol bejelentkezeskor/regisztraciokor kiad egy refresh es egy access tokent. Altalaban a refresh token hoszabb ideig el mint az access token. 
+A backend egy egyszerűsített bearer tokenes rendszert használ, ahol bejelentkezéskor/regisztrációkor kiad egy refresh és egy access tokent. Általában a refresh token hosszabb ideig el mint az access token. 
 
-A refresh token csak a felhasznalo azonosito kodjat tartalmazza (UUIDv4). Az access token tartalmaz mindent amire szuksege lehet a backendnek a felhasznaloval valo interakciokor, mint peldaul az E-Mail cime es a jogkore. Ennek az egyik legnagyobb elonye mas rendszerekkel szemben (pl.: session cookiek), hogy nem kell minden lekereskor az adatbazis alapjan ellenorizni a felhasznalo jogkoret es adatait.
+A refresh token csak a felhasználó azonosító kódját tartalmazza (UUIDv4). Az access token tartalmaz mindent amire szüksége lehet a backendnek a felhasználóval való interakciókor, mint például az E-Mail címe és a jogköre. Ennek az egyik legnagyobb előnye mas rendszerekkel szemben (pl.: session cookiek), hogy nem kell minden lekéréskor az adatbázis alapján hitelesíteni a felhasználó jogkörét és adatait.
 
-Az access token lejartakor a `POST /auth/refresh` endpoint segitsegevel tudunk ujat kerni, feltetelezve hogy a refresh tokenunk nem jart le. Refresh token lejartakor a felhasznalonak ujra be kell jelentkeznie.
+Az access token lejártakor a `POST /auth/refresh` endpoint segítségével tudunk újat kerni, feltételezve hogy a refresh tokenünk nem járt le. Refresh token lejártakor a felhasználónak újra be kell jelentkeznie.
 
-A TOTP bekapcsolasi flow-ja nem teljesen egyertelmu elso ranezesre: 
-1. `POST /auth/totp`: Vissza adja a kozos secretet es a URI-t amibol generalni lehet a QR kodot, amivel hozza tudja adni a felhasznalo barmilyen TOTP alkalmazashoz (peldaul Google Authenticator, Bitwarden)
-2. `PUT /auth/totp`: Ebben a hivasban vissza kell kuldeni a szervernek a felhasznalo jelszavat, es az akkori ervenyes TOTP kodot. Ezzel aktivalja a masodik faktort bejelentkezeskor. 
+A TOTP bekapcsolási flow-ja nem teljesen egyértelmű első ránézésre: 
+1. `POST /auth/totp`: Vissza adja a közös eceteset és a URI-t amiből generálni lehet a QR kódot, amivel hozzá tudja adni a felhasználó bármilyen TOTP alkalmazáshoz (például Google Authenticator, Bitwarden)
+2. `PUT /auth/totp`: Ebben a hívásban vissza kell küldeni a szervernek a felhasználó jelszavat, és az akkori érvényes TOTP kódot. Ezzel aktiválja a második faktort bejelentkezéskor. 
 
-#### Az access tokenben talalhato mezok, es az ertekeik
-- `id`: A felhasznalohoz tartozo UUIDv4
-- `type`: Erteke mindig `access`. (Refresh tokeneknel ez mindig `refresh`)
-- `firstName`: A felhasznalo altal regisztraciokor megadott keresztnev.
-- `lastName`: A felhasznalo altal regisztraciokor megadott vezeteknev.
-- `role`: A felhasznalo [[#Jogosultsagi szintek|jogosultsagi szintje]].
-- `totpEnabled`: `true`, ha a felhasznalo bekapcsolta a TOTP ketfaktoros bejelentkezest.
+#### Az access tokenben található mezők, és értékeik
+- `id`: A felhasználóhoz tartozó UUIDv4
+- `type`: Érteke mindig `access`. (Refresh tokeneknél ez mindig `refresh`)
+- `firstName`: A felhasználó által regisztrációkor megadott keresztnév.
+- `lastName`: A felhasználó által regisztrációkor megadott vezetéknév.
+- `role`: A felhasználó [[#Jogosultsagi szintek|jogosultsági szintje]].
+- `totpEnabled`: `true`, ha a felhasználó bekapcsolta a TOTP kétfaktoros bejelentkezést.
 
 ### Authorization
-Viszonylag egyszeruen kezeli a backend a jogosultsagi szinteket. Minden 'szint' (kodban role-nak nevezzuk), eleri az alatta levo szintnek az osszes funkcionalitasat.
+Viszonylag egyszerűen kezeli a backend a jogosultsági szinteket. Minden 'szint' (kódban role-nak nevezzük), eléri az alatta levő szintnek az összes funkcionalitását.
 
-#### Jogosultsagi szintek
-Csokkeno sorrendben, az elerheto endpointok merteke alapjan:
+#### Jogosultsági szintek
+Csökkenő sorrendben, az elérhető endpointok száma alapján:
 - Admin
 - Manager
 - Employee
 - Customer
 - Guest (nincs bejelentkezve)
 
-### Validacio
+### Validáció
 
-### Ismert hibak
+### Ismert hibák
 
 ## Desktop
 
-Az asztali alkalmazásba csak admin jogosultsággal legetséges bejelentkezni.
+Az asztali alkalmazásba csak admin jogosultsággal lehetséges bejelentkezni.
 
 ### Stack
 
