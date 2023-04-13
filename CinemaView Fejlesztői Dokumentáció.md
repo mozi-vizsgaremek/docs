@@ -9,7 +9,7 @@ A CinemaView Mozi Kezelő Csomag három részre osztható: Backend, Desktop (asz
 - Postgres
 
 ### Telepítés és futtatás
-A projekt npm helyett pnpm-et használ, de a workflow-t ez csak annyiban változtatja meg, hogy más a package lock file. Ajánlott az npm kerülése.
+A projekt npm helyett pnpm-et használ, de a workflow-t ez csak annyiban változtatja meg, hogy más a package lock fájl. Ajánlott az npm kerülése.
 
 A backend futtatásához [Docker](https://www.docker.com/) és [Docker Compose](https://docs.docker.com/compose/install/) szükséges (ha egyben akarjuk kezelni az adatbázissal).
 
@@ -42,17 +42,17 @@ Az alábbi változókat lehet megadni `.env` fájlban vagy az adott operációs 
 - `JWT_ISSUER`: Tetszőleges string, ez kerül bele a JWT token `iss` mezejébe.
 - `REFRESH_TOKEN_EXPIRATION`: A refresh JWT token lejárati ideje, percben. (Alapból 1 év; 525960 perc)
 - `ACCESS_TOKEN_EXPIRATION`: Az access JWT token lejárati ideje, percben. (Alapból 5 perc)
-- `UPLOAD_DIRECTORY`: A mappa ahova a feltöltött film boritok, bannerek kerulnek.
-- `PORT`: A port amin a backend kiszolgálja a lekéréseket.
-- `BASE_URL`: A külső alap URL, ez alapján generálja a feltöltött kepék elérési útvonalait.
+- `UPLOAD_DIRECTORY`: A mappa ahova a feltöltött film borítók, bannerek kerülnek.
+- `PORT`: A port amin a backend kiszolgálja a kéréseket.
+- `BASE_URL`: A külső gyökér URL, ez alapján generálja a feltöltött kepék elérési útvonalait.
 - `TOTP_ISSUER`: Tetszőleges string, ez kerül bele a TOTP tokenbe.
 - `ENV`: A környezet ahol fut a backend, a kettő lehetséges értéke `dev`, `prod`
 
 ### Endpointok
-Az endpointok nincsenek ebben a dokumentumban leírva, mivel magától generál a backend egy OpenAPI v3 schemát a backend, a validációs szabályok segítségével. A Swagger oldal elérhető a backendről, a `/docs` route alatt (például: ` http://localhost:8085/docs`), ha az `env` változó `dev`-re van állítva.
+Az endpointok nincsenek ebben a dokumentumban leírva, mivel magától generál a backend egy OpenAPI v3 schemát, a validációs szabályok segítségével. A Swagger oldal elérhető a `/docs` route alatt (például: ` http://localhost:8085/docs`). A Swagger dokumentáció böngésző csak akkor érhető el ha az `env` környezeti változó értéke `dev`.
 
 ### CORS
-A CORS szabalyok is az `env` valtozotol fuggenek, ha `dev` akkor minden origin-t enged. Ha `prod`-ra van állítva akkor csak a megadott regex-el matchelő origineket engedi. (Ami most `leventea.hu`-ra van állítva, mivel ott van egy test deployment). Ez a regex az `src/index.ts` fileban talalhato.
+A CORS szabályok is az `env` változótól függenek, ha `dev` akkor minden origin-t enged. Ha `prod`-ra van állítva akkor csak a megadott regex-el matchelő origineket engedi. (Ami most `leventea.hu`-ra van állítva, mivel ott van egy test deployment). Ez a regex az `src/index.ts` fájlban található.
 
 ### Tesztelés
 Tesztelésre [insomnia](https://insomnia.rest)-t használunk, amit lehetséges automatikusan is futtatni az `inso` CLI program segítségével. Jelenleg nincsen CI pipeline-ba integrálva.
@@ -62,7 +62,7 @@ Az insomnia fájl megtalálható a backend repository gyökerében, `Insomnia.js
 ### Mappa struktúra
 A `src/` mappán belül található az összes forráskód állomány. A gyökerében minden olyan modul megtalálható ami közös a route-ok között. Routing a [`@fastify/autoload`](https://github.com/fastify/fastify-autoload) package segítségével van megoldva.
 
-A `routes/` mappán belül minden Fastify plugin automatikus betöltésre kerul, es az endpointjaik a mappajuk neve alapjan lesz elerheto a REST API segitsegevel. Peldaul a `routes/auth/index.ts` állományban exportalt plugin összes endpointja a `/auth/` prefix-el lesz elérhető.
+A `routes/` mappán belül minden Fastify plugin automatikus betöltésre kerül, és az endpointjaik a mappájuk neve alapján lesz elérhető a REST API-n  keresztül. Például a `routes/auth/index.ts` állományban exportált plugin összes endpointja a `/auth/` prefix-el lesz elérhető.
 
 Az autoload nem szab meg semmilyen kikötéseket a fájlnevekkel kapcsolatban, de ebben a projektben ezeket a konvenciókat használjuk:
 - `index.ts`: Az összes route, schemaval együtt
