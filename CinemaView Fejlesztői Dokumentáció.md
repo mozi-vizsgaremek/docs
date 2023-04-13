@@ -77,18 +77,25 @@ A backend egy egyszerusitett bearer tokenes rendszert hasznal, ahol bejelentkeze
 
 A refresh token csak a felhasznalo azonosito kodjat tartalmazza (UUIDv4). Az access token tartalmaz mindent amire szuksege lehet a backendnek a felhasznaloval valo interakciokor, mint peldaul az E-Mail cime es a jogkore. Ennek az egyik legnagyobb elonye mas rendszerekkel szemben (pl.: session cookiek), hogy nem kell minden lekereskor az adatbazis alapjan ellenorizni a felhasznalo jogkoret es adatait.
 
-Az access tokenben talalhato mezok, es az ertekeik:
+Az access token lejartakor a `POST /auth/refresh` endpoint segitsegevel tudunk ujat kerni, feltetelezve hogy a refresh tokenunk nem jart le. Refresh token lejartakor a felhasznalonak ujra be kell jelentkeznie.
+
+A TOTP bekapcsolasi flow-ja nem teljesen egyertelmu elso ranezesre: 
+1. `POST /auth/totp`: Vissza adja a kozos secretet es a URI-t amibol generalni lehet a QR kodot, amivel hozza tudja adni a felhasznalo barmilyen TOTP alkalmazashoz (peldaul Google Authenticator, Bitwarden)
+2. `PUT /auth/totp`: Ebben a hivasban vissza kell kuldeni a szervernek a felhasznalo jelszavat, es az akkori ervenyes TOTP kodot. Ezzel aktivalja a masodik faktort bejelentkezeskor. 
+
+#### Az access tokenben talalhato mezok, es az ertekeik
 - `id`: A felhasznalohoz tartozo UUIDv4
 - `type`: Erteke mindig `access`. (Refresh tokeneknel ez mindig `refresh`)
 - `firstName`: A felhasznalo altal regisztraciokor megadott keresztnev.
 - `lastName`: A felhasznalo altal regisztraciokor megadott vezeteknev.
-- `role`: A felhasznalo [[#Authorization|jogosultsagi szintje]].
+- `role`: A felhasznalo [[#Jogosultsagi szintek|jogosultsagi szintje]].
 - `totpEnabled`: `true`, ha a felhasznalo bekapcsolta a TOTP ketfaktoros bejelentkezest.
 
 ### Authorization
 Viszonylag egyszeruen kezeli a backend a jogosultsagi szinteket. Minden 'szint' (kodban role-nak nevezzuk), eleri az alatta levo szintnek az osszes funkcionalitasat.
 
-A jogosultsagi szintek, csokkeno sorrendben, az elerheto endpointok merteke alapjan:
+#### Jogosultsagi szintek
+Csokkeno sorrendben, az elerheto endpointok merteke alapjan:
 - Admin
 - Manager
 - Employee
