@@ -60,11 +60,30 @@ Tesztelésre [insomnia](https://insomnia.rest)-t használunk, amit lehetséges a
 Az insomnia file megtalalhato a backend repository gyokereben, `Insomnia.json` neven, ezt kozvetlen importalni lehet a programba.
 
 ### Mappa struktura
+A `src/` mappan belul talalhato az osszes forraskod allomany. A gyokereben minden olyan modul megtalalhato ami kozos a route-ok kozott. Routing a [`@fastify/autoload`](https://github.com/fastify/fastify-autoload) package segitsegevel van megoldva. 
+
+A `routes/` mappan belul minden Fastify plugin automatikus betoltesre kerul, es az endpointjaik a mappajuk neve alapjan lesz elerheto a REST API segitsegevel. Peldaul a `routes/auth/index.ts` allomanyban exportalt plugin osszes endpointja a `/auth/` prefix-el lesz elerheto.
+
+Az autoload nem szab meg semmilyen kikoteseket a filenevekkel kapcsolatban, de ebben a projektben ezt a konvenciot hasznaljuk:
+- `index.ts`: Az osszes route, schemaval egyutt
+- `model.ts`: Az adatbazishoz valo interakciohoz hasznalt fuggvenyek, nagyreszt csak queryk.
+- `service.ts`: Az adatbazison feluli absztrakciok amelyek komplikaltabbak egy lekeresnel.
+- `types.ts`: Minden schema es model amit a slonik (zod) es a [[#Validacio|fastify validatora]] (TypeBox) hasznal, egyeb relevans tipusokkal egyutt.
+
+Vannak olyan route-ok, ahol mas fileok is talalhatoak, peldalul a `movies/` eroforrasban a feltoltessel foglalkozo modulok.
 
 ### Authentication
 A backend egy egyszerusitett bearer tokenes rendszert hasznal, ahol bejelentkezeskor/regisztraciokor kiad egy refresh es egy access tokent. Altalaban a refresh token hoszabb ideig el mint az access token. 
 
 A refresh token csak a felhasznalo azonosito kodjat tartalmazza (UUIDv4). Az access token tartalmaz mindent amire szuksege lehet a backendnek a felhasznaloval valo interakciokor, mint peldaul az E-Mail cime es a jogkore. Ennek az egyik legnagyobb elonye mas rendszerekkel szemben (pl.: session cookiek), hogy nem kell minden lekereskor az adatbazis alapjan ellenorizni a felhasznalo jogkoret es adatait.
+
+Az access tokenben talalhato mezok, es az ertekeik:
+- `id`: A felhasznalohoz tartozo UUIDv4
+- `type`: Erteke mindig `access`. (Refresh tokeneknel ez mindig `refresh`)
+- `firstName`: A felhasznalo altal regisztraciokor megadott keresztnev.
+- `lastName`: A felhasznalo altal regisztraciokor megadott vezeteknev.
+- `role`: A felhasznalo [[#Authorization|jogosultsagi szintje]].
+- `totpEnabled`: `true`, ha a felhasznalo bekapcsolta a TOTP ketfaktoros bejelentkezest.
 
 ### Authorization
 Viszonylag egyszeruen kezeli a backend a jogosultsagi szinteket. Minden 'szint' (kodban role-nak nevezzuk), eleri az alatta levo szintnek az osszes funkcionalitasat.
