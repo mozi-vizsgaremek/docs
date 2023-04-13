@@ -39,38 +39,38 @@ Az alábbi változókat lehet megadni `.env` fájlban vagy az adott operációs 
 - `POSTGRES_CONN_STR`: Standard Postgres csatlakozási URI, [további dokumentáció itt található](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING)
 - `POSTGRES_PORT`: Ugyan annak kell lennie mint amit megadtunk a `POSTGRES_CONN_STR`-ben, ezt az érteket a Docker Compose használja.
 - `JWT_SECRET`: A JWT token hash secretje
-- `JWT_ISSUER`: Tetszoleges string, ez kerul bele a JWT token `iss` mezojebe.
-- `REFRESH_TOKEN_EXPIRATION`: A refresh JWT token lejarati ideje, percben. (Alapbol 1 ev, 525960 perc)
-- `ACCESS_TOKEN_EXPIRATION`: Az access JWT token lejarati ideje, percben. (Alapbol 5 perc)
-- `UPLOAD_DIRECTORY`: A mappa ahova a feltoltott kep boritok, bannerek kerulnek.
-- `PORT`: A port amin a backend figyel.
-- `BASE_URL`: A kulso alap URL, ez alapjan generalja a feltoltott kepek eleresi utvonalat.
-- `TOTP_ISSUER`: Tetszoleges string, ez kerul bele a TOTP tokenbe.
-- `ENV`: A kornyezet ahol fut a backend, a ketto lehetseges erteke `dev`, `prod`
+- `JWT_ISSUER`: Tetszőleges string, ez kerül bele a JWT token `iss` mezejébe.
+- `REFRESH_TOKEN_EXPIRATION`: A refresh JWT token lejárati ideje, percben. (Alapból 1 év; 525960 perc)
+- `ACCESS_TOKEN_EXPIRATION`: Az access JWT token lejárati ideje, percben. (Alapból 5 perc)
+- `UPLOAD_DIRECTORY`: A mappa ahova a feltöltött film boritok, bannerek kerulnek.
+- `PORT`: A port amin a backend kiszolgálja a lekéréseket.
+- `BASE_URL`: A külső alap URL, ez alapján generálja a feltöltött kepék elérési útvonalait.
+- `TOTP_ISSUER`: Tetszőleges string, ez kerül bele a TOTP tokenbe.
+- `ENV`: A környezet ahol fut a backend, a kettő lehetséges értéke `dev`, `prod`
 
 ### Endpointok
-Az endpointok nincsenek ebben a dokumentumban leirva, mivel magatol generalja a backend a validacios szabalyok segitsegevel. A Swagger oldal elerheto a backendrol, a `/docs` route alatt (pl ` http://localhost:8085/docs`), ha az `env` valtozo `dev`-re van allitva.
+Az endpointok nincsenek ebben a dokumentumban leírva, mivel magától generál a backend egy OpenAPI v3 schemát a backend, a validációs szabályok segítségével. A Swagger oldal elérhető a backendről, a `/docs` route alatt (például: ` http://localhost:8085/docs`), ha az `env` változó `dev`-re van állítva.
 
 ### CORS
-A CORS szabalyok is az `env` valtozotol fuggenek, ha `dev` akkor minden origin-t enged. Ha `prod`-ra van allitva akkor csak a megadott regex-el matchelo origineket engedi. (Ami most `leventea.hu`-ra van allitva, mivel ott van egy test deployment). Ez a regex az `src/index.ts` fileban talalhato.
+A CORS szabalyok is az `env` valtozotol fuggenek, ha `dev` akkor minden origin-t enged. Ha `prod`-ra van állítva akkor csak a megadott regex-el matchelő origineket engedi. (Ami most `leventea.hu`-ra van állítva, mivel ott van egy test deployment). Ez a regex az `src/index.ts` fileban talalhato.
 
 ### Tesztelés
 Tesztelésre [insomnia](https://insomnia.rest)-t használunk, amit lehetséges automatikusan is futtatni az `inso` CLI program segítségével. Jelenleg nincsen CI pipeline-ba integrálva.
 
-Az insomnia file megtalalhato a backend repository gyokereben, `Insomnia.json` neven, ezt kozvetlen importalni lehet a programba.
+Az insomnia fájl megtalálható a backend repository gyökerében, `Insomnia.json` néven, ezt közvetlen importálni lehet a programba.
 
-### Mappa struktura
-A `src/` mappan belul talalhato az osszes forraskod allomany. A gyokereben minden olyan modul megtalalhato ami kozos a route-ok kozott. Routing a [`@fastify/autoload`](https://github.com/fastify/fastify-autoload) package segitsegevel van megoldva. 
+### Mappa struktúra
+A `src/` mappán belül található az összes forráskód állomány. A gyökerében minden olyan modul megtalálható ami közös a route-ok között. Routing a [`@fastify/autoload`](https://github.com/fastify/fastify-autoload) package segítségével van megoldva.
 
-A `routes/` mappan belul minden Fastify plugin automatikus betoltesre kerul, es az endpointjaik a mappajuk neve alapjan lesz elerheto a REST API segitsegevel. Peldaul a `routes/auth/index.ts` allomanyban exportalt plugin osszes endpointja a `/auth/` prefix-el lesz elerheto.
+A `routes/` mappán belül minden Fastify plugin automatikus betöltésre kerul, es az endpointjaik a mappajuk neve alapjan lesz elerheto a REST API segitsegevel. Peldaul a `routes/auth/index.ts` állományban exportalt plugin összes endpointja a `/auth/` prefix-el lesz elérhető.
 
-Az autoload nem szab meg semmilyen kikoteseket a filenevekkel kapcsolatban, de ebben a projektben ezt a konvenciot hasznaljuk:
-- `index.ts`: Az osszes route, schemaval egyutt
-- `model.ts`: Az adatbazishoz valo interakciohoz hasznalt fuggvenyek, nagyreszt csak queryk.
-- `service.ts`: Az adatbazison feluli absztrakciok amelyek komplikaltabbak egy lekeresnel.
-- `types.ts`: Minden schema es model amit a slonik (zod) es a [[#Validacio|fastify validatora]] (TypeBox) hasznal, egyeb relevans tipusokkal egyutt.
+Az autoload nem szab meg semmilyen kikötéseket a fájlnevekkel kapcsolatban, de ebben a projektben ezeket a konvenciókat használjuk:
+- `index.ts`: Az összes route, schemaval együtt
+- `model.ts`: Az adatbázishoz való interakcióhoz használt függvények, nagyrészt queryk.
+- `service.ts`: Az adatbázison felüli absztrakciók amelyek komplikáltabbak egy lekérésnél.
+- `types.ts`: Minden schema és model amit a slonik (zod) és a [[#Validacio|Fastify validátora]] (TypeBox) használ, egyéb releváns típusokkal együtt.
 
-Vannak olyan route-ok, ahol mas fileok is talalhatoak, peldalul a `movies/` eroforrasban a feltoltessel foglalkozo modulok.
+Vannak olyan route-ok, ahol mas fájlok is találhatóak, például a `movies/` erőforrásban a feltöltessél foglalkozó modulok.
 
 ### Authentication
 A backend egy egyszerusitett bearer tokenes rendszert hasznal, ahol bejelentkezeskor/regisztraciokor kiad egy refresh es egy access tokent. Altalaban a refresh token hoszabb ideig el mint az access token. 
