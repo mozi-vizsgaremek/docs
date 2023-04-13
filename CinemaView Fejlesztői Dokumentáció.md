@@ -9,35 +9,35 @@ A CinemaView Mozi Kezelő Csomag három részre osztható: Backend, Desktop (asz
 - Postgres
 
 ### Telepítés és futtatás
-A projekt npm helyett pnpm-et használ, de a workflow-t ez csak annyiban változtatja hogy más a package lock file. Ajánlott az npm kerülése.
+A projekt npm helyett pnpm-et használ, de a workflow-t ez csak annyiban változtatja meg, hogy más a package lock file. Ajánlott az npm kerülése.
 
 A backend futtatásához [Docker](https://www.docker.com/) és [Docker Compose](https://docs.docker.com/compose/install/) szükséges (ha egyben akarjuk kezelni az adatbázissal).
 
-A `pnpm i` parancs sikeres futtatasa utan a kovetkezo npm scriptek elerhetoek:
-- `pnpm run watch`: Automatikusan ujra inditja a projektet, file szerkeztese utan.
-- `pnpm run build`: Sima build script, a compileolt fileok elerhetoek `build/` alatt.
+A `pnpm i` parancs sikeres futtatása után a következő npm scriptek válnak elérhetővé:
+- `pnpm run watch`: Automatikusan újra indítja a projektet, ha azt érzékeli hogy az egyik forrás fájl megváltozott.
+- `pnpm run build`: Sima build script, a fordított fájlok elérhetőek a `build/` mappa alatt.
 
 ### Adatbázis, migrációk
-Az adatbázis migrációkat [flyway CLI](https://documentation.red-gate.com/fd/welcome-to-flyway-184127914.html) segitsegevel futtatjuk. Jelenleg ez nincs integralva az egyik Docker workflow-ba se, ezert manualisan kell futtatni.
+Az adatbázis migrációkat [flyway CLI](https://documentation.red-gate.com/fd/welcome-to-flyway-184127914.html) segítségével futtatjuk. Jelenleg ez nincs integrálva az egyik Docker workflow-ba se, ezért manuálisan kell futtatni.
 
-A backend nem hasznal semmilyen ORM-et, helyette slonikkal folytatunk lekereseket az adatbazis fele, ami egy egyszerubb wrapper az eredeti `pg` package korul, tipusokkal kiegeszitve. Slonik lehetove teszi a string template queryk irasat, ami sokkal kenyelmesebb mintha prepared queryket kene kezzel irnunk (persze a hatterben meg igy is prepared queryket hasznal). 
+A backend nem használ semmilyen ORM-et, helyette slonikkal folytatunk lekéréseket az adatbázis felé, ami egy egyszerűbb wrapper az eredeti `pg` package körül, típusokkal kiegészítve. Slonik lehetővé teszi a string template queryk írását, ami sokkal kényelmesebb mintha prepared statementeket kéne kézzel írnunk (persze a háttérben meg így is prepared statementeket használ). 
 
-Teszt es fejlesztoi kornyezetekben az alabbi parancsal lehet egyszeruen elinditani egy postgres instance-t.
+Tesztelési és fejlesztési környezetekben az alábbi paranccsal lehet egyszerűen elindítani egy Postgres instance-t.
 ```bash
 docker run -p 5432:5432 -e POSTGRES_USER=vizsgaremek -e POSTGRES_PASSWORD=vizsgaremek -d --name postgres postgres:15.1
 ```
 
-Az osszes migracio futtatasa az alabbi parancsal lehetseges, feltetelezve hogy a projekt gyokermappaja a jelenlegi path, es `vizsgaremek` mind az adatbazis neve, a felhasznalonev es a jelszo.
+Az összes migráció futtatása az alábbi paranccsal lehetséges, feltételezve hogy a projekt gyökérmappája a jelenlegi munkakönyvtár, és `vizsgaremek` mind az adatbázis neve, a felhasználónév és a jelszó.
 ```bash
 docker run --network=host -v $PWD/migrations:/sql --rm flyway/flyway:9.8.1 -user=vizsgaremek -password=vizsgaremek -url="jdbc:postgresql://localhost:5432/vizsgaremek" -locations=filesystem:/sql migrate
 ```
 
-### Konfiguracio
-Az osszes ertekre talalhato pelda a backend repo gyokereben talalhato `.env.example` fileban.
+### Konfiguráció
+Az összes értekre található példa a backend repo gyökerében található `.env.example` fájlban.
 
-Az alabbi valtozokat lehet megadni `.env` fileban vagy az adott operacios rendszer kornyezeti valtozoiban:
-- `POSTGRES_CONN_STR`: Standard Postgres csatlakozasi URI, [tovabbi dokumentacio itt talalhato](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING)
-- `POSTGRES_PORT`: Ugyan annak kell lennie mint amit megadtunk a `POSTGRES_CONN_STR`-ben, ezt az erteket a Docker Compose hasznalja.
+Az alábbi változókat lehet megadni `.env` fájlban vagy az adott operációs rendszer környezeti változóiban:
+- `POSTGRES_CONN_STR`: Standard Postgres csatlakozási URI, [további dokumentáció itt található](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING)
+- `POSTGRES_PORT`: Ugyan annak kell lennie mint amit megadtunk a `POSTGRES_CONN_STR`-ben, ezt az érteket a Docker Compose használja.
 - `JWT_SECRET`: A JWT token hash secretje
 - `JWT_ISSUER`: Tetszoleges string, ez kerul bele a JWT token `iss` mezojebe.
 - `REFRESH_TOKEN_EXPIRATION`: A refresh JWT token lejarati ideje, percben. (Alapbol 1 ev, 525960 perc)
