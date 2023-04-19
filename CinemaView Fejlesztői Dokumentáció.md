@@ -32,6 +32,65 @@ Az összes migráció futtatása az alábbi paranccsal lehetséges, feltételezv
 docker run --network=host -v $PWD/migrations:/sql --rm flyway/flyway:9.8.1 -user=vizsgaremek -password=vizsgaremek -url="jdbc:postgresql://localhost:5432/vizsgaremek" -locations=filesystem:/sql migrate
 ```
 
+### Táblák
+Az összes ID oszlop UUIDv4 stringeket tartalmaz.
+
+#### users
+- id: string, UUIDv4
+- username: string
+- password: string
+- first_name: string
+- last_name: string
+- role: customer
+	- a customer enum lehetséges értékei: customer, employee, manager, admin
+- totp_secret: string
+- totp_enabled: boolean
+- hourly_wage: numeric (integer)
+	- a felhasználó órabére, a jelenlegi verzióban nincs használva.
+- manager_id: string, UUIDv4
+	- users táblára idegen kulcs, az adott felhasználó menedzserje, a jelenlegi verzióban nincs használva.
+- registration_date: timestamptz 
+- hire_date: timestamptz
+
+#### shifts
+- id: string, UUIDv4
+- shift_from: string, UUIDv4
+- shift_to: string, UUIDv4
+- required_staff: integer
+
+#### shifts_taken
+- id: string, UUIDv4
+- shift_id: string, UUIDv4
+- user_id: string, UUIDv4
+
+#### reservations
+- id: string, UUIDv4
+- screening_id: string, UUIDv4
+- user_id: string, UUIDv4
+- purchase_time: timestamptz
+
+#### screenings
+- id: string, UUIDv4
+- movie_id: string, UUIDv4
+- auditorium_id: string, UUIDv4
+- time: timestamptz
+
+#### auditoriums
+- id: string, UUIDv4
+- name: string
+- seats: integer
+
+#### movies
+- id: string, UUIDv4
+- title: string
+- subtitle: string
+- duration_mins: integer
+- thumbnail_path: string
+	- path a neve, de a backend mostani verziója csak a kép MD5 hash-ét tárolja, ami alapján könnyen le tudja generálni a kép elérési útját
+- banner_path: string
+	- a felső megjegyzés erre az oszlopra is érvényes
+- description: string
+
 ### Konfiguráció
 Az összes értekre található példa a backend repo gyökerében található `.env.example` fájlban.
 
