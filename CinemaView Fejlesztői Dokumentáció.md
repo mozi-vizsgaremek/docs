@@ -154,7 +154,7 @@ A TOTP bekapcsolási flow-ja nem teljesen egyértelmű első ránézésre:
 Viszonylag egyszerűen kezeli a backend a jogosultsági szinteket. Minden 'szint' (kódban role-nak nevezzük), eléri az alatta levő szintnek az összes funkcionalitását.
 
 #### Jogosultsági szintek
-Csökkenő sorrendben, az elérhető endpointok száma alapján:
+Csökkenő sorrendben, az elérhető endpontok száma alapján:
 - Admin
 - Manager
 - Employee
@@ -162,6 +162,10 @@ Csökkenő sorrendben, az elérhető endpointok száma alapján:
 - Guest (nincs bejelentkezve)
 
 ### Validáció
+
+A bemenő és kimenő adatok validációja TypeBox segítségével történik, általabán a "Schema" végződésű típusok, konstansok értéke TypeBox konstruktorjai segítségével vannak építve.
+
+Az OpenAPI v3 schema is ezek alapján kerül generálásra.
 
 ### Ismert hibák
 
