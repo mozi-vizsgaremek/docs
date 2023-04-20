@@ -189,7 +189,7 @@ A `pnpm i` parancs sikeres futtatása után a következő npm scriptek válnak e
 - `pnpm run dev`: Elindítja a programot.
 
 ### Mappa struktúra
-A `src/` mappán belül található az összes forráskód állomány. 
+A `src/` mappán belül található az összes forráskód állomány. A mappa struktúrát a SvelteKit szabja meg.
 
 A `routes/` mappán belül található a `lib` mappában amiben a többször felhasznált komponensek helyezkednek el. A `routes` mappában két almappa található ami segítségével szabályozni tudjuk a layout megjelenését különböző oldalakon ezeken belül találhatóak az oldalakat megjelenítő fájlok.
 
@@ -205,4 +205,8 @@ Az oldal reszponzitivitásához [TailWind](https://tailwindcss.com/)-et használ
 ### Dátum kezelés
 
 A dátum kezelésére a [Date-fns](https://date-fns.org/docs/Getting-Started)-t használtam.
+
+### Multipage
+
+A multipage-ek működéséhez a [felte](https://felte.dev/docs/svelte/multi-page-forms)-t használtam.
 
