@@ -185,7 +185,7 @@ Az asztali alkalmazásba csak admin jogosultsággal lehetséges bejelentkezni.
 A projekt npm helyett pnpm-et használ, de a workflow-t ez csak annyiban változtatja meg, hogy más a package lock fájl. Ajánlott az npm kerülése.
 
 A `pnpm i` parancs sikeres futtatása után a következő npm scriptek válnak elérhetővé:
-- `pnpm run watch`: Automatikusan újra indítja a projektet, ha azt érzékeli hogy az egyik forrás fájl megváltozott.
+- `pnpm run build`: Az alkalmazás éles verziójának létrehozása.
 - `pnpm run dev`: Elindítja a programot.
 
 ### Mappa struktúra
