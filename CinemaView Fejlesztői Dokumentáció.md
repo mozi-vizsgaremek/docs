@@ -178,3 +178,31 @@ Az asztali alkalmazásba csak admin jogosultsággal lehetséges bejelentkezni.
 ## Frontend
 
 ### Stack
+- Svelte (SSR)
+- Typescript
+
+### Telepítés és futtatás
+A projekt npm helyett pnpm-et használ, de a workflow-t ez csak annyiban változtatja meg, hogy más a package lock fájl. Ajánlott az npm kerülése.
+
+A `pnpm i` parancs sikeres futtatása után a következő npm scriptek válnak elérhetővé:
+- `pnpm run watch`: Automatikusan újra indítja a projektet, ha azt érzékeli hogy az egyik forrás fájl megváltozott.
+- `pnpm run dev`: Elindítja a programot.
+
+### Mappa struktúra
+A `src/` mappán belül található az összes forráskód állomány. 
+
+A `routes/` mappán belül található a `lib` mappában amiben a többször felhasznált komponensek helyezkednek el. A `routes` mappában két almappa található ami segítségével szabályozni tudjuk a layout megjelenését különböző oldalakon ezeken belül találhatóak az oldalakat megjelenítő fájlok.
+
+#### Fájlok
+
+- `+page.svelte`: Ez a fájl felelős a felhasználó által használt felület megjelenítésére.
+- `+page.server.ts`: Ezzel a fájlal kommunikálunk és nyerünk vissza adatokat a backend alkalmazással. 
+
+### Reszponzivítás
+
+Az oldal reszponzitivitásához [TailWind](https://tailwindcss.com/)-et használtam és css-t.
+
+### Dátum kezelés
+
+A dátum kezelésére a [Date-fns](https://date-fns.org/docs/Getting-Started)-t használtam.
+
