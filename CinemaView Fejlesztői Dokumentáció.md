@@ -210,3 +210,6 @@ A dátum kezelésére a [Date-fns](https://date-fns.org/docs/Getting-Started)-t 
 
 A multipage-ek működéséhez a [felte](https://felte.dev/docs/svelte/multi-page-forms)-t használtam.
 
+### Backend-el kommunikálás
+
+A Backend-el való kommunikálást a `+page.server.ts` teszi lehetővé. Itt tudunk lekérdezéseket indítani a backend endpointokra.
