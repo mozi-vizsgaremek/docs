@@ -32,6 +32,12 @@ Az összes migráció futtatása az alábbi paranccsal lehetséges, feltételezv
 docker run --network=host -v $PWD/migrations:/sql --rm flyway/flyway:9.8.1 -user=vizsgaremek -password=vizsgaremek -url="jdbc:postgresql://localhost:5432/vizsgaremek" -locations=filesystem:/sql migrate
 ```
 
+### Dump
+
+Az adatbázishoz tartozó dump a `dump.sql` állományban található meg, a backend repository-ban. A dump mindent tartalmaz, kivéve: foglalt műszakokat, foglalt jegyeket, es film képeket (mivel ezek a lemezen vannak tarolva es nem lehet őket SQL dump-kent tarolni).
+
+A dumpot a `psql` parancssoros program, vagy bármilyen grafikus adatbázis kezelő (pl.: DBeaver) segítségével lehet importálni.
+
 ### Táblák
 Az összes ID oszlop UUIDv4 stringeket tartalmaz.
 
