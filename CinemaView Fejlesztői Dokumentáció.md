@@ -180,6 +180,19 @@ Az OpenAPI v3 schema is ezek alapján kerül generálásra.
 Az asztali alkalmazásba csak admin jogosultsággal lehetséges bejelentkezni.
 
 ### Stack
+- JavaFX
+- Java 17
+- Retrofit 2
+
+### Mappa struktúra
+ A `src/main/java/com.example.cinemaapp` könyvárban, minden oldalnak van egy külön Controller-je, és ezek külön-külön csoportosítva vannak.
+ A `src/main/resources/com.example.cinemaapp` könyvtárban vannak az `FXML` fájlok, szintén ugyan úgy csoportosítva külön mappákba mint a Controller-eknél.
+ 
+### Adatbázis csatlakozás
+ Adatbázishoz való kapcsolódáshoz Retrofit 2-t használtam, ez a `src/main/java/com.example.cinemaapp/rest` mappán belül található.
+ 
+### Dátum kezelés
+ Az adatbázisban található dátumok kezelésére írni kellett egy adaptert, ami a `src/main/java/com.example.cinemaapp/adapter` mappában található.
 
 ## Frontend
 
