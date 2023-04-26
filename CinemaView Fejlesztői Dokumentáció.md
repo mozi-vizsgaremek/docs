@@ -193,6 +193,9 @@ Az asztali alkalmazásba csak admin jogosultsággal lehetséges bejelentkezni.
  
 ### Dátum kezelés
  Az adatbázisban található dátumok kezelésére írni kellett egy adaptert, ami a `src/main/java/com.example.cinemaapp/adapter` mappában található.
+ 
+### Könnyen kezelhetőség
+ Az volt a célom, hogy mindenki számára teljes mértékben érthető és könnyen kezelhető legyen, így a főbb oldalak hasonlóan néznek ki, és hasonló elven is működnek.
 
 ## Frontend
 
