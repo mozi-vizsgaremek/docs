@@ -185,3 +185,36 @@ Az admin illetve a manager tudják törölni csak a vetítési időpontokat még
 
 Ez az oldal ki listázza az aktív film vetítéseket.
 Rákattintáskor a kiválasztott film vetítési időpontja törlődik.
+
+## Desktop
+
+### Felhasználók
+ A desktop alkalmazásba kizárólag admin jogosultsággal rendelkező felhasználó léphet be.
+
+### Bejelentkezés
+ Regisztrációra csak a frontend alkalmazásban van lehetőség. Amennyiben sikeres a bejelentkezés, az alkalmazás megnyitja a `MainMenu`-t (Főoldal).
+ 
+ ![Login page](./img/Login.png)
+
+### Főoldal
+ A főoldalon a felhasználónak lehetősége van kijelentkezni, illetve továbbmenni a `ModifyPerson` (Felhasználók módosítása), a `ModifyMovie` (Filmek módosítása), 
+a `ModifyAuditorium` (Előadók módosítása) oldalra.
+
+![Main menu](./img/MainMenu.png)
+ 
+### Felhasználó módosítása
+ A `ModifyPerson` oldalon lehetősége van a felhasználónak visszalépni a főoldalra, kijelenkezni, illetve módosítani egy felhasználót. A felhazsnálok egy listában találhatóak, ebben a listában lehet keresni beleírva a lista mellett lévő mezőbe. Amennyiben valakit szeretnénk módosítani, rá kell menni a nevére, és kiírja az adatait. Amelyik adat módosítható, az mellett van egy `Modify` (Módosít) nevű gomb, amire ha rákattintunk, előjön egy felugró ablak, és a mezőbe beírva, majd rákkattintva a `Modify` gombra módosíthatjuk az adott adatot.
+ 
+ ![Modify person](./img/ModifyPerson.jpg)
+ 
+ ### Filmek módosítása
+  A `ModifyMovie` oldalon lehetősége van a felhasználónak az adatbázisban lévő filmek módosítására, a kijelentkezésre és a főoldal visszalépésére. Az elv ugyan az mint a felhasználó módosító oldalon.
+  A filmek `thumnailUrl` illetve `bannerUrl` adatai mellett található egy `Upload image` illetve egy `Copy` gomb. A `Copy` gombbal kimásoljuk (ha van) az adott adatot, az `Upload image` gombra kattintva tudunk tallózni egy képet. Amennyiben már van kép feltöltve az adott filmhez, akkor is az `Upload image` gombra kattintva tudjuk azt módosítani tallózás után.
+  Lehetősége van még a felhasználónak egy adott film törlésére is, ezt a `Delete` gomb segítségével tudja megtenni, és a listában kiválasztott filmet fogja kitörölni, illetve lehetősége van új filmet létrehozni, ezt a `Create new` gombra kattintva teheti meg. Miután rákattintott a felhasználó, egy felugró ablakban, az adatok kitöltése után, a `Create` gombra kattintva létrehozza az új filmet (amennyiben minden adatot helyesen töltött ki).
+  
+  ![Modify movie](./img/ModifyMovie.png)
+  
+ ### Előadók módosítása
+  A `ModifyAuditorium` oldalon a felhasználónak lehetősége van kijelentkezni, visszamenni a főoldalra. A felhasználónak itt is lehetősége van új előadót létrehozni, azt a `Create new` gombra kattintva teheti meg, és ugyan azon az elven működik mint a film létrehozásánál, illetve törölhet is előadót, a `Delete` gombra kattintva, ami szintúgy ugyan azon az elven működük mint a film törlésénél.
+  
+  ![Modify auditorium](./img/ModifyAuditorium.png)
